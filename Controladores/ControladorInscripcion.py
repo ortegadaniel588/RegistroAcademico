@@ -1,43 +1,54 @@
 from Modelos.Inscripcion import Inscripcion
+from Modelos.Estudiante import Estudiante
+from Modelos.Materia import Materia
 from Repositorios.RepositorioInscripcion import RepositorioInscripcion
+from Repositorios.RepositorioEstudiante import RepositorioEstudiante
+from Repositorios.RepositorioMateria import RepositorioMateria
 
 
 class ControladorInscripcion():
     def __init__(self):
-        # Se crea una instancia del RepositorioEstudiante para interactuar con la base de datos
         self.repositorioInscripcion = RepositorioInscripcion()
+        self.repositorioEstudiantes = RepositorioEstudiante()
+        self.repositorioMaterias = RepositorioMateria()
 
     def index(self):
-        # Retorna todos los estudiantes existentes en la base de datos
         return self.repositorioInscripcion.findAll()
 
-    def create(self, infoInscripcion):
-        # Crea un nuevo objeto Estudiante a partir de la información recibida
-        nuevoInscripcion = Inscripcion(infoInscripcion)
-
-        # Guarda el nuevo estudiante en la base de datos utilizando el repositorio
-        return self.repositorioInscripcion.save(nuevoInscripcion)
+    """
+    Asignacion estudiante y materia a inscripción
+    """
+    def create(self, infoInscripcion, id_estudiante, id_materia):
+        nuevaInscripcion = Inscripcion(infoInscripcion)
+        elEstudiante = Estudiante(self.repositorioEstudiantes.findById(id_estudiante))
+        laMateria = Materia(self.repositorioMaterias.findById(id_materia))
+        nuevaInscripcion.estudiante = elEstudiante
+        nuevaInscripcion.materia = laMateria
+        return self.repositorioInscripcion.save(nuevaInscripcion)
 
     def show(self, id):
-        # Obtiene un estudiante por su ID desde la base de datos utilizando el repositorio
         elInscripcion = Inscripcion(self.repositorioInscripcion.findById(id))
-
-        # Retorna los atributos del estudiante como un diccionario
         return elInscripcion.__dict__
 
-    def update(self, id, infoInscripcion):
-        # Obtiene el estudiante actual por su ID desde la base de datos utilizando el repositorio
-        inscripcionActual = Inscripcion(self.repositorioEstudiante.findById(id))
-
-        # Actualiza los atributos del estudiante con la información recibida
-        inscripcionActual.id = infoInscripcion["id"]
-        inscripcionActual.ano = infoInscripcion["ano"]
-        inscripcionActual.semestre = infoInscripcion["semestre"]
-        inscripcionActual.nota_final = infoInscripcion["nota_final"]
-
-        # Guarda los cambios del estudiante actualizado en la base de datos utilizando el repositorio
-        return self.repositorioInscripcion.save(inscripcionActual)
+    """
+    Modificación de inscripción (estudiante y materia)
+    """
+    def update(self, id, infoInscripcion, id_estudiante, id_materia):
+        laInscripcion = Inscripcion(self.repositorioInscripcion.findById(id))
+        laInscripcion.id = infoInscripcion["id"]
+        laInscripcion.año = infoInscripcion["ano"]
+        laInscripcion.semestre = infoInscripcion["semestre"]
+        laInscripcion.notaFinal = infoInscripcion["nota_final"]
+        elEstudiante = Estudiante(self.repositorioEstudiantes.findById(id_estudiante))
+        laMateria = Materia(self.repositorioMaterias.findById(id_materia))
+        laInscripcion.estudiante = elEstudiante
+        laInscripcion.materia = laMateria
+        return self.repositorioInscripcion.save(laInscripcion)
 
     def delete(self, id):
-        # Elimina un estudiante por su ID desde la base de datos utilizando el repositorio
         return self.repositorioInscripcion.delete(id)
+
+
+
+
+

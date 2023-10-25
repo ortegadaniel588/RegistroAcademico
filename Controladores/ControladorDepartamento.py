@@ -5,7 +5,7 @@ from Repositorios.RepositorioDepartamento import RepositorioDepartamento
 class ControladorDepartamento():
     def __init__(self):
         # Se crea una instancia del RepositorioEstudiante para interactuar con la base de datos
-        self.repositorioEstudiante = RepositorioDepartamento()
+        self.repositorioDepartamento = RepositorioDepartamento()
 
     def index(self):
         # Retorna todos los estudiantes existentes en la base de datos
