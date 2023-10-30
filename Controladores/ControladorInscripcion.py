@@ -48,6 +48,18 @@ class ControladorInscripcion():
     def delete(self, id):
         return self.repositorioInscripcion.delete(id)
 
+   #obtener inscritos por id materia
+    def listarInscritosEnMateria(self, id_materia):
+        return self.repositorioInscripcion.getListadoInscritosEnMateria(id_materia)
+
+    #Obtener notas mas altas por materia
+
+    def notasMasAltasPorCurso(self):
+        return self.repositorioInscripcion.getMayorNotaPorCurso()
+
+    #obtener el promedio de las notas
+    def promedioNotasEnMateria(self, id_materia):
+        return self.repositorioInscripcion.promedioNotasEnMateria(id_materia)
 
 
 

@@ -121,8 +121,28 @@ def modificarInscripcion(id_inscripcion, id_estudiante, id_materia):
 def eliminarInscripcion(id_inscripcion):
     json = miControladorInscripcion.delete(id_inscripcion)
     return jsonify(json)
+
+#cosulta inscripciones por id
+@app.route("/inscripciones/materia/<string:id_materia>",methods=['GET'])
+def inscritosEnMateria(id_materia):
+    json=miControladorInscripcion.listarInscritosEnMateria(id_materia)
+    return jsonify(json)
+
+#consulta nota mas alta
+@app.route("/inscripciones/notas_mayores",methods=['GET'])
+def getNotasMayores():
+    json=miControladorInscripcion.notasMasAltasPorCurso()
+    return jsonify(json)
+
+#obtener promedio notas de una materia
+@app.route("/inscripciones/promedio_notas/materia/<string:id_materia>", methods=['GET'])
+def getPromedioNotasEnMateria(id_materia):
+    json = miControladorInscripcion.promedioNotasEnMateria(id_materia)
+    return jsonify(json)
+
 ##fin petecion Inscripcion
 ######################################################################
+
 
 #############################################################
 ##peticiones de Materia
